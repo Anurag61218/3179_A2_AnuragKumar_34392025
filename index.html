@@ -278,8 +278,8 @@
         }
 
         @keyframes pulse {
-            0%, 100% { border-radius: #ffc107; }
-            50% { border-radius: #ff9800; }
+            0%, 100% { border-color: #ffc107; }
+            50% { border-color: #ff9800; }
         }
 
         .guidelines-box h3 {
@@ -874,7 +874,7 @@
                                     "scale": {
                                         "type": "threshold",
                                         "domain": [15, 35, 75],
-                                        "range": ["#2ecc71", "#f39c12", "#e67e22", "#c0392b"]
+                                        "range": ["#3498db", "#f39c12", "#e67e22", "#8b4513"]
                                     },
                                     "legend": {
                                         "title": "WHO Air Quality Category",
@@ -959,8 +959,8 @@
                             "field": "ARI_Prevalence_%",
                             "type": "quantitative",
                             "scale": {
-                                "scheme": "redyellowgreen",
-                                "reverse": true,
+                                "scheme": "viridis",
+                                "reverse": false,
                                 "domain": [0, 3.5]
                             },
                             "legend": {
@@ -1023,9 +1023,10 @@
                 {
                     "mark": {
                         "type": "rule",
-                        "color": "#c0392b",
+                        "color": "#8b4513",
                         "strokeDash": [3, 3],
-                        "opacity": 0.5
+                        "opacity": 0.7,
+                        "strokeWidth": 2
                     },
                     "data": {"values": [{"WHO_Limit": 15}]},
                     "encoding": {
@@ -1040,7 +1041,8 @@
                         "dx": 5,
                         "dy": -5,
                         "fontSize": 10,
-                        "color": "#c0392b"
+                        "color": "#8b4513",
+                        "fontWeight": "bold"
                     },
                     "data": {"values": [{"text": "WHO Limit", "x": 15, "y": 100}]},
                     "encoding": {
@@ -1113,7 +1115,7 @@
                     "type": "nominal",
                     "scale": {
                         "domain": ["PM2.5 Level", "Clean Fuel Use (%)", "Respiratory Infections (%)"],
-                        "range": ["#e74c3c", "#2ecc71", "#3498db"]
+                        "range": ["#e67e22", "#3498db", "#9b59b6"]
                     },
                     "legend": {
                         "title": "Metric (Click to Filter)",
@@ -1323,7 +1325,7 @@
                     "type": "nominal",
                     "scale": {
                         "domain": ["Child Stunting", "Child Wasting", "Male Tobacco Use"],
-                        "range": ["#e74c3c", "#f39c12", "#9b59b6"]
+                        "range": ["#e67e22", "#f39c12", "#9b59b6"]
                     },
                     "legend": {
                         "title": "Health Risk Factor",
@@ -1390,7 +1392,7 @@
                 "color": {
                     "field": "Clean_Fuel_Use_%",
                     "type": "quantitative",
-                    "scale": {"scheme": "greenblue"},
+                    "scale": {"scheme": "blues"},
                     "legend": {
                         "title": "Clean Fuel Use (%)",
                         "titleFontSize": 12
@@ -1399,9 +1401,9 @@
                 "tooltip": [
                     {"field": "City", "type": "nominal"},
                     {"field": "Population_Category", "type": "nominal", "title": "Population Category"},
-                    {"field": "City", "type": "quantitative", "title": "PM2.5", "format": ".1f"},
-                    {"field": "City", "type": "quantitative", "title": "ARI (%)", "format": ".1f"},
-                    {"field": "City", "type": "quantitative", "title": "Clean Fuel Use (%)", "format": ".1f"}
+                    {"field": "PM2_5_Annual_Mean", "type": "quantitative", "title": "PM2.5", "format": ".1f"},
+                    {"field": "ARI_Prevalence_%", "type": "quantitative", "title": "ARI (%)", "format": ".1f"},
+                    {"field": "Clean_Fuel_Use_%", "type": "quantitative", "title": "Clean Fuel (%)", "format": ".1f"}
                 ]
             }
         };
@@ -1423,7 +1425,7 @@
                         "color": {
                             "field": "City",
                             "type": "nominal",
-                            "scale": {"sceheme": "category10"},
+                            "scale": {"scheme": "category10"},
                             "legend": {
                                 "title": "City",
                                 "titleFontSize": 13,
