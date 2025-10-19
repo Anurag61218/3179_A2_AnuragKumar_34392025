@@ -16,7 +16,7 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: #1a1a1a;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -30,7 +30,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
 
-        /* Header Section*/
+        /* Header Section */
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -92,7 +92,7 @@
         }
 
         .stat-card:hover {
-            transform: translate(-5px);
+            transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.25);
         }
 
@@ -278,7 +278,7 @@
         }
 
         @keyframes pulse {
-            0%, 100% { border-color: #ffc107; }
+            0%, 100% { border-radius: #ffc107; }
             50% { border-radius: #ff9800; }
         }
 
@@ -296,7 +296,7 @@
             margin-top: 15px;
         }
 
-        .guidelines-item {
+        .guideline-item {
             background: white;
             padding: 15px;
             border-radius: 8px;
@@ -564,7 +564,7 @@
                     <p class="section-description">
                         Cities with worse outdoor air quality also struggle with indoor pollution from cooking fuels.
                         This scatter plot reveals a concerning pattern: as outdoor PM2.5 increases, the percentage of
-                        households using clean cooking fuel decreases. Hover over points to see detailed cit data.
+                        households using clean cooking fuel decreases. Hover over points to see detailed city data.
                     </p>
                 </div>
                 <div class="viz-container">
@@ -593,7 +593,7 @@
                     <div class="insight-box">
                         <h3>Unexpected Patterns in Respiratory Health</h3>
                         <p><strong>The Pune Paradox:</strong> Despite moderate outdoor pollution (49.8 μg/m^3), Pune shows the highest acute respiratory infection rate (3.3%). This suggests healthcare access, disease reporting systems, and population density play significant roles beyond just air quality.</p>
-                        <p><strong>Bangalore's Success:</strong> Reports virtually no ARI cases despite pollution levels of 51.9 μg/m^3, possible reflecting better healthcare infrastructure, higher clean fuel adoption (97.2%), and effective public health interventions.</p>
+                        <p><strong>Bangalore's Success:</strong> Reports virtually no ARI cases despite pollution levels of 51.9 μg/m^3, possibly reflecting better healthcare infrastructure, higher clean fuel adoption (97.2%), and effective public health interventions.</p>
                     </div>
                 </div>
 
@@ -652,7 +652,7 @@
                     </div>
                     <div class="insight-box">
                         <h3>Vulnerability Factors Beyond Air Quality</h3>
-                        <p><strong>malnutrition Multiplies Risk:</strong> Kolkata and Patna show high rates of child malnutrition (29-34% stunted), making children more vulnerable to respiratory infections. Undernourished children have weaker immune systems and lung development.</p>
+                        <p><strong>Malnutrition Multiplies Risk:</strong> Kolkata and Patna show high rates of child malnutrition (29-34% stunted), making children more vulnerable to respiratory infections. Undernourished children have weaker immune systems and lung development.</p>
                         <p><strong>Tobacco Epidemic:</strong> Male tobacco use ranges from 9% (Chennai) to 42% (Kolkata). Combined with air pollution, tobacco users face exponentially higher risks of COPD, lung cancer, and cardiovascular diseases. Kolkata's "triple burden" - high PM2.5, high tobacco use, and poor nutrition - creates a perfect storm for respiratory disease.</p>
                     </div>
                  </div>
@@ -747,13 +747,27 @@
             <div class="footer-content">
                 <div>
                     <h3>Data Sources & Methodology</h3>
+                    <p><strong>Air Quality Data:</strong> Combined air quality and health metrics dataset, 2023. Annual mean PM2.5 and PM10 concentrations for Indian cities.</p>
+                    <p style="margin-top: 10px;"><strong>Health Data:</strong> National Family Health Survey (NFHS-5), 2019-2021. Ministry of Health and Family Welfare, Government of India. City-level indicators on respiratory health, household fuel use, tobacco consumption, and child nutrition.</p>
+                    <p style="margin-top: 10px;"><strong>Time Series Data:</strong> Monthly PM2.5 measurements across major Indian cities, 2023.</p>
+                    <p style="margin-top: 10px;"><strong>Visualization:</strong> Created using Vega-Lite visualization grammar v5. All data processing and analysis conducted using standardized CSV formats. Interactive elements powered by Vega-Embed.</p>
+                </div>
+                <div>
+                    <h3>Further Reading</h3>
+                    <ul>
+                        <li><a href="https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/policy-progress/who-air-quality-guidelines" target="_blank">WHO Air Quality Guidelines</a></li>
+                        <li><a href="http://rchiips.org/nfhs/" target="_blank">National Family Health Survey (NFHS)</a></li>
+                        <li><a href="https://app.cpcbccr.com/ccr/#/caaqm-dashboard-all/caaqm-landing" target="_blank">India Air Quality Monitoring</a></li>
+                        <li><a href="https://nacp.moefcc.gov.in/" target="_blank">National Clean Air Programme</a></li>
+                        <li><a href="https://pmuy.gov.in/" target="_blank">Pradhan Mantri Ujjwala Yojana</a></li>
+                    </ul>
                 </div>
             </div>
           </div>
 
           <!-- Author -->
            <div class="author-info">
-            <p>Created for FIT3179 Data Visualizatin Assignment 2 | Monash University | October 2025</p>
+            <p>Created for FIT3179 Data Visualization Assignment 2 | Monash University | October 2025</p>
             <p style="margin-top: 5px;">Data Visualization demonstrates the intersection of environmental pollution and public health outcomes across Indian cities</p>
            </div>
     </div>
@@ -786,6 +800,676 @@
             "actions": false
         };
         
+        //Map visualization with embedded India outline
+        const mapSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 600,
+            "projection": {
+                "type": "mercator",
+                "center": [78, 22],
+                "scale": 1000
+            },
+            "layer": [
+                {
+                    "data": {
+                        "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json",
+                        "format": {
+                            "type": "topojson",
+                            "feature": "countries"
+                        }
+                    },
+                    "transform": [
+                        {"filter": "datum.id == '356'"}
+                    ],
+                    "mark": {
+                        "type": "geoshape",
+                        "fill": "#e8f4f8",
+                        "stroke": "#999",
+                        "strokeWidth": 1
+                    }
+                },
+                {
+                    "data": {
+                        "url": "data/combined_air_quality_health_data.csv"
+                    },
+                    "transform": [
+                        {
+                            "calculate": "datum.City === 'Bangalore' ? 'Bengaluru' : datum.City",
+                            "as": "City_Display"
+                        }
+                    ],
+                    "encoding": {
+                        "longitude": {"field": "Longitude", "type": "quantitative"},
+                        "latitude": {"field": "Latitude", "type": "quantitative"}
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "circle",
+                                "opacity": 0.9,
+                                "stroke": "white",
+                                "strokeWidth": 2.5
+                            },
+                            "encoding": {
+                                "size": {
+                                    "field": "PM2_5_Annual_Mean",
+                                    "type": "quantitative",
+                                    "scale": {
+                                        "type": "sqrt",
+                                        "range": [300, 1500],
+                                        "domain": [40, 105]
+                                    },
+                                    "legend": {
+                                        "title": "PM2.5 Level (μg/m^3)",
+                                        "titleFontSize": 13,
+                                        "titleFontWeight": "bold",
+                                        "labelFontSize": 11,
+                                        "orient": "bottom-left"
+                                    }
+                                },
+                                "color": {
+                                    "field": "PM2_5_Annual_Mean",
+                                    "type": "quantitative",
+                                    "scale": {
+                                        "type": "threshold",
+                                        "domain": [15, 35, 75],
+                                        "range": ["#2ecc71", "#f39c12", "#e67e22", "#c0392b"]
+                                    },
+                                    "legend": {
+                                        "title": "WHO Air Quality Category",
+                                        "titleFontSize": 13,
+                                        "titleFontWeight": "bold",
+                                        "labelFontSize": 11,
+                                        "orient": "bottom-right",
+                                        "values": [15, 35, 75],
+                                        "labelExpr": "datum.value == 15 ? 'Good (<=15)' : datum.value == 35 ? 'Moderate (15-35)' : datum.value == 75 ? 'Unhealthy (35-75)' : 'Very Unhealthy (>75)'"
+                                    }
+                                },
+                                "tooltip": [
+                                    {"field": "City_Display", "type": "nominal", "title": "City"},
+                                    {"field": "State", "type": "nominal", "title": "State"},
+                                    {"field": "PM2_5_Annual_Mean", "type": "quantitative", "title": "PM2.5 (μg/m^3)", "format": ".1f"},
+                                    {"field": "PM10_Annual_Mean", "type": "quantitative", "title": "PM10 (μg/m^3)", "format": ".1f"},
+                                    {"field": "ARI_Prevalence_%", "type": "quantitative", "title": "Respiratory Infections (%)", "format": ".1f"},
+                                    {"field": "Clean_Fuel_Use_%", "type": "quantitative", "title": "Clean Fuel Use (%)", "format": ".1f"},
+                                    {"field": "Tobacco_Men_%", "type": "quantitative", "title": "Male Tobacco Use (%)", "format": ".1f"}
+                                ]
+                            }
+                        },
+                        {
+                            "mark": {
+                                "type": "text",
+                                "dy": -25,
+                                "fontSize": 11,
+                                "fontWeight": "bold"
+                            },
+                            "encoding": {
+                                "text": {"field": "City_Display", "type": "nominal"}
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        //Scatter plot with regression line and annotations
+        const scatterSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 450,
+            "data": {
+                "url": "data/combined_air_quality_health_data.csv"
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "circle",
+                        "size": 400,
+                        "opacity": 0.8
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "PM2_5_Annual_Mean",
+                            "type": "quantitative",
+                            "scale": {"domain": [10, 110]},
+                            "axis": {
+                                "title": "Outdoor Air Pollution: PM2.5 Concentration (μg/m^3)",
+                                "titleFontSize": 14,
+                                "titleFontWeight": "bold",
+                                "grid": true,
+                                "gridDash": [2, 2],
+                                "gridOpacity": 0.3
+                            }
+                        },
+                        "y": {
+                            "field": "Clean_Fuel_Use_%",
+                            "type": "quantitative",
+                            "scale": {"domain": [55, 102]},
+                            "axis": {
+                                "title": "Indoor Air Quality: Clean Cooking Fuel Usage (%)",
+                                "titleFontSize": 14,
+                                "titleFontWeight": "bold",
+                                "grid": true,
+                                "gridDash": [2, 2],
+                                "gridOpacity": 0.3
+                            }
+                        },
+                        "color": {
+                            "field": "ARI_Prevalence_%",
+                            "type": "quantitative",
+                            "scale": {
+                                "scheme": "redyellowgreen",
+                                "reverse": true,
+                                "domain": [0, 3.5]
+                            },
+                            "legend": {
+                                "title": "Respiratory Infection Rate (%)",
+                                "titleFontSize": 13,
+                                "titleFontWeight": "bold"
+                            }
+                        },
+                        "size": {
+                            "field": "Population_Category",
+                            "type": "nominal",
+                            "scale": {
+                                "domain": ["1-5M", "5-10M", ">10M"],
+                                "range": [200, 400, 600]
+                            },
+                            "legend": null
+                        },
+                        "tooltip": [
+                            {"field": "City", "type": "nominal", "title": "City"},
+                            {"field": "PM2_5_Annual_Mean", "type": "quantitative", "title": "PM2.5 (μg/m^3)", "format": ".1f"},
+                            {"field": "Clean_Fuel_Use_%", "type": "quantitative", "title": "Clean Fuel Use (%)", "format": ".1f"},
+                            {"field": "ARI_Prevalence_%", "type": "quantitative", "title": "ARI Prevalence (%)", "format": ".1f"},
+                            {"field": "Population_Category", "type": "nominal", "title": "Population Category"}
+                        ]
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "line",
+                        "color": "#667eea",
+                        "strokeDash": [5, 5],
+                        "opacity": 0.6,
+                        "strokeWidth": 2
+                    },
+                    "transform": [
+                        {
+                            "regression": "Clean_Fuel_Use_%",
+                            "on": "PM2_5_Annual_Mean",
+                            "method": "linear"
+                        }
+                    ],
+                    "encoding": {
+                        "x": {"field": "PM2_5_Annual_Mean", "type": "quantitative"},
+                        "y": {"field": "Clean_Fuel_Use_%", "type": "quantitative"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "dy": -15,
+                        "fontSize": 10,
+                        "fontWeight": "bold"
+                    },
+                    "encoding": {
+                        "x": {"field": "PM2_5_Annual_Mean", "type": "quantitative"},
+                        "y": {"field": "Clean_Fuel_Use_%", "type": "quantitative"},
+                        "text": {"field": "City", "type": "nominal"}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "#c0392b",
+                        "strokeDash": [3, 3],
+                        "opacity": 0.5
+                    },
+                    "data": {"values": [{"WHO_Limit": 15}]},
+                    "encoding": {
+                        "x": {"datum": 15}
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "left",
+                        "baseline": "bottom",
+                        "dx": 5,
+                        "dy": -5,
+                        "fontSize": 10,
+                        "color": "#c0392b"
+                    },
+                    "data": {"values": [{"text": "WHO Limit", "x": 15, "y": 100}]},
+                    "encoding": {
+                        "x": {"field": "x", "type": "quantitative"},
+                        "y": {"field": "y", "type": "quantitative"},
+                        "text": {"field": "text", "type": "nominal"}
+                    }
+                }
+            ]
+        };
+
+        //Bar chart with better interactivity
+        const barSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 400,
+            "data": {
+                "url": "data/combined_air_quality_health_data.csv"
+            },
+            "transform": [
+                {
+                    "fold": ["PM2_5_Annual_Mean", "Clean_Fuel_Use_%", "ARI_Prevalence_%"],
+                    "as": ["Metric", "Value"]
+                },
+                {
+                    "calculate": "datum.Metric === 'PM2_5_Annual_Mean' ? 'PM2.5 Level' : datum.Metric === 'Clean_Fuel_Use_%' ? 'Clean Fuel Use (%)' : 'Respiratory Infections (%)'",
+                    "as": "Metric_Label"
+                },
+                {
+                    "calculate": "datum.Metric === 'PM2_5_Annual_Mean' ? datum.Value : datum.Metric === 'Clean_Fuel_Use_%' ? (100 - datum.Value) : datum.Value * 10",
+                    "as": "Normalized_Value"
+                }
+            ],
+            "params": [
+                {
+                    "name": "metric_selection",
+                    "select": {"type": "point", "fields": ["Metric_Label"]},
+                    "bind": "legend"
+                }
+            ],
+            "mark": {
+                "type": "bar",
+                "cornerRadiusEnd": 4
+            },
+            "encoding": {
+                "x": {
+                    "field": "City",
+                    "type": "nominal",
+                    "axis": {
+                        "title": null,
+                        "labelAngle": -45,
+                        "labelFontSize": 12
+                    },
+                    "sort": "-y"
+                },
+                "y": {
+                    "field": "Value",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Value",
+                        "titleFontSize": 14,
+                        "titleFontWeight": "bold",
+                        "grid": true,
+                        "gridDash": [2, 2],
+                        "gridOpacity": 0.3
+                    }
+                },
+                "color": {
+                    "field": "Metric_Label",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["PM2.5 Level", "Clean Fuel Use (%)", "Respiratory Infections (%)"],
+                        "range": ["#e74c3c", "#2ecc71", "#3498db"]
+                    },
+                    "legend": {
+                        "title": "Metric (Click to Filter)",
+                        "titleFontSize": 13,
+                        "titleFontWeight": "bold",
+                        "orient": "top"
+                    }
+                },
+                "opacity": {
+                    "condition": {"param": "metric_selection", "value": 1},
+                    "value": 0.2
+                },
+                "xOffset": {"field": "Metric_Label"},
+                "tooltip": [
+                    {"field": "City", "type": "nominal"},
+                    {"field": "Metric_Label", "type": "nominal", "title": "Metric"},
+                    {"field": "Value", "type": "quantitative", "format": ".1f"}
+                ]
+            }
+        };
+
+        //Time Series Visualization
+        const timeSeriesSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 400,
+            "data": {
+                "url": "data/pm25_timeseries_data.csv"
+            },
+            "params": [
+                {
+                    "name": "city_selection",
+                    "select": {"type": "point", "fields": ["City"]},
+                    "bind": "legend"
+                }
+            ],
+            "mark": {
+                "type": "line",
+                "point": true,
+                "strokeWidth": 2
+            },
+            "encoding": {
+                "x": {
+                    "field": "Month_Name",
+                    "type": "ordinal",
+                    "axis": {
+                        "title": "Month",
+                        "titleFontSize": 14,
+                        "titleFontWeight": "bold",
+                        "labelAngle": -45
+                    },
+                    "sort": ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"]
+                },
+                "y": {
+                    "field": "PM2_5",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "PM2.5 Concentration (μg/m^3)",
+                        "titleFontSize": 14,
+                        "titleFontWeight": "bold",
+                        "grid": true,
+                        "gridDash": [2, 2],
+                        "gridOpacity": 0.3
+                    }
+                },
+                "color": {
+                    "field": "City",
+                    "type": "nominal",
+                    "scale": {
+                        "scheme": "category10"
+                    },
+                    "legend": {
+                        "title": "City (Click to Filter)",
+                        "titleFontSize": 13,
+                        "titleFontWeight": "bold"
+                    }
+                },
+                "opacity": {
+                    "condition": {"param": "city_selection", "value": 1},
+                    "value": 0.1
+                },
+                "tooltip": [
+                    {"field": "City", "type": "nominal"},
+                    {"field": "Month_Name", "type": "ordinal", "title": "Month"},
+                    {"field": "PM2_5", "type": "quantitative", "title": "PM2.5", "format": ".1f"},
+                    {"field": "Season", "type": "nominal"},
+                    {"field": "Event_Type", "type": "nominal", "title": "Special Event"}
+                ]
+            }
+        };
+
+        //Heatmap
+        const heatmapSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 400,
+            "data": {
+                "url": "data/combined_air_quality_health_data.csv"
+            },
+            "transform": [
+                {
+                    "fold": [
+                        "PM2_5_Annual_Mean",
+                        "ARI_Prevalence_%",
+                        "Tobacco_Men_%",
+                        "Stunted_Children_%",
+                        "Wasted_Children_%"
+                    ],
+                    "as": ["Indicator", "Value"]
+                },
+                {
+                    "calculate": "datum.Indicator === 'PM2_5_Annual_Mean' ? 'PM2.5 Level' : datum.Indicator === 'ARI_Prevalence_%' ? 'Respiratory Infections' : datum.Indicator === 'Tobacco_Men_%' ? 'Male Tobacco Use' : datum.Indicator === 'Stunted_Children_%' ? 'Child Stunting' : 'Child Wasting'",
+                    "as": "Indicator_Label"
+                },
+                {
+                    "calculate": "datum.Indicator === 'PM2_5_Annual_Mean' ? datum.Value : datum.Value",
+                    "as": "Normalized_Value"
+                }
+            ],
+            "mark": {
+                "type": "rect",
+                "cornerRadius": 4
+            },
+            "encoding": {
+                "x": {
+                    "field": "Indicator_Label",
+                    "type": "nominal",
+                    "axis": {
+                        "title": null,
+                        "labelAngle": -45,
+                        "labelFontSize": 11
+                    }
+                },
+                "y": {
+                    "field": "City",
+                    "type": "nominal",
+                    "axis": {
+                        "title": null,
+                        "labelFontSize": 11
+                    },
+                    "sort": {"op": "mean", "field": "Normalized_Value", "order": "descending"}
+                },
+                "color": {
+                    "field": "Normalized_Value",
+                    "type": "quantitative",
+                    "scale": {
+                        "scheme": "viridis"
+                    },
+                    "legend": {
+                        "title": "Risk Level (Normalized)",
+                        "titleFontSize": 12
+                    }
+                },
+                "tooltip": [
+                    {"field": "City", "type": "nominal"},
+                    {"field": "Indicator_Label", "type": "nominal", "title": "Indicator"},
+                    {"field": "Value", "type": "quantitative", "format": ".1f", "title": "Actual Value"}
+                ]
+            }
+        };
+
+        //Health Ranking - Stacked bar
+        const healthRankingSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 400,
+            "data": {
+                "url": "data/nfhs_health_summary.csv"
+            },
+            "transform": [
+                {
+                    "fold": ["Stunted_Children_%", "Wasted_Children_%", "Tobacco_Men_%"],
+                    "as": ["Health_Indicator", "Percentage"]
+                },
+                {
+                    "calculate": "datum.Health_Indicator === 'Stunted_Children_%' ? 'Child Stunting' : datum.Health_Indicator === 'Wasted_Children_%' ? 'Child Wasting' : 'Male Tobacco Use'",
+                    "as": "Indicator_Label"
+                }
+            ],
+            "mark": {
+                "type": "bar",
+                "cornerRadius": 4
+            },
+            "encoding": {
+                "y": {
+                    "field": "City",
+                    "type": "nominal",
+                    "axis": {
+                        "title": null,
+                        "labelFontSize": 12
+                    },
+                    "sort": "-x"
+                },
+                "x": {
+                    "field": "Percentage",
+                    "type": "quantitative",
+                    "stack": "zero",
+                    "axis": {
+                        "title": "Cumulative Health Risk Factors (%)",
+                        "titleFontSize": 14,
+                        "titleFontWeight": "bold"
+                    }
+                },
+                "color": {
+                    "field": "Indicator_Label",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Child Stunting", "Child Wasting", "Male Tobacco Use"],
+                        "range": ["#e74c3c", "#f39c12", "#9b59b6"]
+                    },
+                    "legend": {
+                        "title": "Health Risk Factor",
+                        "titleFontSize": 13,
+                        "titleFontWeight": "bold",
+                        "orient": "top"
+                    }
+                },
+                "tooltip": [
+                    {"field": "City", "type": "nominal"},
+                    {"field": "Indicator_Label", "type": "nominal", "title": "Indicator"},
+                    {"field": "Percentage", "type": "quantitative", "title": "Percentage", "format": ".1f"}
+                ]
+            }
+        };
+
+        //Bubble Chart
+        const bubbleSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 400,
+            "data": {
+                "url": "data/combined_air_quality_health_data.csv"
+            },
+            "transform": [
+                {
+                    "calculate": "datum.Population_Category === '1-5M' ? 3 : datum.Population_Category === '5-10M' ? 7 : 14",
+                    "as": "Population_Estimate"
+                }
+            ],
+            "mark": {
+                "type": "circle",
+                "opacity": 0.8
+            },
+            "encoding": {
+                "x": {
+                    "field": "PM2_5_Annual_Mean",
+                    "type": "quantitative",
+                    "scale": {"domain": [10, 110]},
+                    "axis": {
+                        "title": "PM2.5 Level (μg/m^3)",
+                        "titleFontSize": 14,
+                        "grid": true
+                    }
+                },
+                "y": {
+                    "field": "ARI_Prevalence_%",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Respiratory Infection Rate (%)",
+                        "titleFontSize": 14,
+                        "grid": true
+                    }
+                },
+                "size": {
+                    "field": "Population_Estimate",
+                    "type": "quantitative",
+                    "scale": {"range": [200, 2000]},
+                    "legend": {
+                        "title": "Population (Millions)",
+                        "titleFontSize": 12
+                    }
+                },
+                "color": {
+                    "field": "Clean_Fuel_Use_%",
+                    "type": "quantitative",
+                    "scale": {"scheme": "greenblue"},
+                    "legend": {
+                        "title": "Clean Fuel Use (%)",
+                        "titleFontSize": 12
+                    }
+                },
+                "tooltip": [
+                    {"field": "City", "type": "nominal"},
+                    {"field": "Population_Category", "type": "nominal", "title": "Population Category"},
+                    {"field": "City", "type": "quantitative", "title": "PM2.5", "format": ".1f"},
+                    {"field": "City", "type": "quantitative", "title": "ARI (%)", "format": ".1f"},
+                    {"field": "City", "type": "quantitative", "title": "Clean Fuel Use (%)", "format": ".1f"}
+                ]
+            }
+        };
+
+        //Radial Chart
+        const radialSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": "container",
+            "height": 400,
+            "data": {
+                "url": "data/combined_air_quality_health_data.csv"
+            },
+            "layer": [
+                {
+                    "mark": {"type": "arc", "innerRadius": 30, "stroke": "white"},
+                    "encoding": {
+                        "theta": {"field": "PM2_5_Annual_Mean", "type": "quantitative", "stack": true},
+                        "radius": {"field": "PM2_5_Annual_Mean", "scale": {"type": "sqrt", "zero": true, "range": [30, 150]}},
+                        "color": {
+                            "field": "City",
+                            "type": "nominal",
+                            "scale": {"sceheme": "category10"},
+                            "legend": {
+                                "title": "City",
+                                "titleFontSize": 13,
+                                "titleFontWeight": "bold"
+                            }
+                        },
+                        "tooltip": [
+                            {"field": "City", "type": "nominal"},
+                            {"field": "PM2_5_Annual_Mean", "type": "quantitative", "title": "PM2.5", "format": ".1f"},
+                            {"field": "Population_Category", "type": "nominal", "title": "Population"}
+                        ]
+                    }
+                }
+            ]
+        };
+        
+        //Now we embed all the visualizations with responsive config
+        vegaEmbed('#map', mapSpec, responsiveConfig);
+        vegaEmbed('#scatter', scatterSpec, responsiveConfig);
+        vegaEmbed('#barchart', barSpec, responsiveConfig);
+        vegaEmbed('#timeseries', timeSeriesSpec, responsiveConfig);
+        vegaEmbed('#heatmap', heatmapSpec, responsiveConfig);
+        vegaEmbed('#health_ranking', healthRankingSpec, responsiveConfig);
+        vegaEmbed('#bubble_chart', bubbleSpec, responsiveConfig);
+        vegaEmbed('#radial', radialSpec, responsiveConfig);
+
+        //Animate elements on the scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>
